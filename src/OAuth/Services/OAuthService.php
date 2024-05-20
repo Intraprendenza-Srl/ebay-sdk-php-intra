@@ -116,6 +116,10 @@ class OAuthService
             'sandbox' => [
                 'valid'   => ['bool'],
                 'default' => false
+            ],
+            'scope' => [
+                'valid'    => ['string'],
+                'required' => false
             ]
         ];
     }
@@ -271,6 +275,11 @@ class OAuthService
         }
         if (!isset($request->scope)) {
             $request->scope = 'https://api.ebay.com/oauth/api_scope';
+            if($this->getConfig('scope') <> NULL){
+                $request->scope = $this->getConfig('scope');
+            }else{
+                $request->scope = 'https://api.ebay.com/oauth/api_scope';
+            }
         }
 
         return $this->callOperationAsync('getAppToken', $request);
